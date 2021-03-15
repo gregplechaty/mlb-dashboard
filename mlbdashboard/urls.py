@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from mlbstats import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.homepage),
+    path('season', views.season),
+    path('team', views.team),
+    path('player', views.player),
 ]

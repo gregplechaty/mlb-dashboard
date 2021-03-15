@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h1>Baseball stats: Player</h1>
+<p>Choose a player to show their career statistics.</p>
+<form>
+    <label for="player">Choose a player:</label>
+    <select id="player" name="player">
+      <option value="ryan-braun">Ryan Braun</option>
+      <option value="kris-bryant">Kris Bryant</option>
+      <option value="yadier-molina">Yadier Molina</option>
+      <option value="andrew-mccutchen">Andrew McCutchen</option>
+    </select>
+    <input type="submit">
+</form>
+
+<h3>Player stats for {{ player_name }}</h3>
+<embed type="image/svg+xml" src="{{ line_chart }}" />
+
+
+{% endblock content %}

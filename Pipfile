@@ -5,6 +5,11 @@ name = "pypi"
 
 [packages]
 django = "*"
+pygal = "*"
+lxml = "*"
+cairosvg = "*"
+tinycss = "*"
+cssselect = "*"
 
 [dev-packages]
 
