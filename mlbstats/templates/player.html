@@ -6,13 +6,32 @@
 <h1>Baseball stats: Player</h1>
 <p>Choose a player to show their career statistics.</p>
 <form>
-    <label for="player">Choose a player:</label>
-    <select id="player" name="player">
+    <label for="player1">Choose a player:</label>
+    <select id="player1" name="player1" placeholder="Select Player">
+      <option></option>
       <option value="ryan-braun">Ryan Braun</option>
       <option value="kris-bryant">Kris Bryant</option>
       <option value="yadier-molina">Yadier Molina</option>
       <option value="andrew-mccutchen">Andrew McCutchen</option>
     </select>
+    </br>
+    <label for="player2">Choose a second player (optional):</label>
+    <select id="player2" name="player2">
+      <option></option>
+      <option value="ryan-braun">Ryan Braun</option>
+      <option value="kris-bryant">Kris Bryant</option>
+      <option value="yadier-molina">Yadier Molina</option>
+      <option value="andrew-mccutchen">Andrew McCutchen</option>
+    </select>
+    </br>
+    <label for="player">Choose a statistic:</label>
+    <select id="player" name="stat">
+      <option value="rbi">RBIs</option>
+      <option value="h">Hits</option>
+      <option value="ba">Batting Average</option>
+      <option value="hr">Home Runs</option>
+    </select>
+    </br>
     <input type="submit">
 </form>
 

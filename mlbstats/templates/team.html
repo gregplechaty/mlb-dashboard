@@ -3,6 +3,24 @@
 {% block content %}
 
 
-<h1>Baseball stats: Season.</h1>
+<h1>Baseball stats: Milwaukee Brewers, 2020</h1>
+<table class="table">
+    <thead class="thead-light">
+      <tr>
+        {% for item in header %}
+            <th scope="col">{{ item }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+        {% for row in rows %}
+      <tr>
+        {% for item in row %}
+        <td>{{ item }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
 {% endblock content %}

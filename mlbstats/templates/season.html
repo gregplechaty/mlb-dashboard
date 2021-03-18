@@ -3,6 +3,16 @@
 {% block content %}
 
 
-<h1>Baseball stats: Season.</h1>
-
+<h1>Team Historical Statistics</h1>
+<h3>For now, it's just the Brewers.</h3>
+<form>
+    <label for="player1">Choose a statistic:</label>
+    <select id="stat" name="stat">
+      <option></option>
+      <option value="ryan-braun">Ryan Braun</option>
+      <option value="kris-bryant">Kris Bryant</option>
+      <option value="yadier-molina">Yadier Molina</option>
+      <option value="andrew-mccutchen">Andrew McCutchen</option>
+    </select>
+</form>
 {% endblock content %}
