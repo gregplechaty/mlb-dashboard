@@ -9,10 +9,13 @@
     <label for="player1">Choose a statistic:</label>
     <select id="stat" name="stat">
       <option></option>
-      <option value="ryan-braun">Ryan Braun</option>
-      <option value="kris-bryant">Kris Bryant</option>
-      <option value="yadier-molina">Yadier Molina</option>
-      <option value="andrew-mccutchen">Andrew McCutchen</option>
+      <option value="W">Wins</option>
+      <option value="L">Losses</option>
+      <option value="W-L%">Win/Loss percentage</option>
+      <option value="Attendance">Attendance</option>
     </select>
+    <input type="submit">
 </form>
+
+<embed type="image/svg+xml" src="{{ chart }}" />
 {% endblock content %}

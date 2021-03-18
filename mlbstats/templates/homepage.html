@@ -3,10 +3,18 @@
 {% block content %}
 
 
-<h1>Baseball stats homepage</h1>
-<h2>Currently we need {{ adoptions_needed }} new ideas.</h2>
-<h4><a href="/season">Season Statistics</a></h4>
-<h4><a href="/team">Team Statistics</a></h4>
-<h4><a href="/player">Player Statistics</a></h4>
+<h1>Baseball Statistics</h1>
+<div class="row justify-content-start">
+    <div class="col-lg-2 col-md-4 col-sm-12">
+        <h4><a a class="btn btn-primary" href="/season" role="button">Season Statistics</a></h4>
+    </div>
+    <div class="col-lg-2 col-md-4 col-sm-12">
+        <h4><a class="btn btn-danger" href="/team" role="button">Team Statistics</a></h4>
+    </div>
+    <div class="col-lg-2 col-md-4 col-sm-12">
+        <h4><a a class="btn btn-primary" href="/player" role="button">Player Statistics</a></h4>
+    </div>
+</div>
+    <img src="../static/stadium.jpg" alt="baseball stadium" width="50%" height="auto"/>
 
 {% endblock content %}

@@ -17,14 +17,49 @@ def homepage(request):
 
 def season(request):
     print('--------view season')
+    nav_active_season = ' active'
+    player_name = ''
+    stat_line_chart = ''
+    if 'stat' in request.GET and request.GET['stat'] != "":
+        print('Historical statistic info request:', request.GET['stat'])
+        stat = request.GET['stat']
+        stat_form = request.GET['stat']
+        file = 'mlbstats/static/team-hist-stats/brewers-historical.csv'
+        ####################
+        list_for_csv = []
+        x_labels = []
+        y_values = []
+        ####################
+        with open(file) as csv.file:
+            csv_reader = csv.reader(csv.file, delimiter=',')
+            header = next(csv_reader)
+            for idx, item in enumerate(header):
+                if item == stat_form:
+                    stat_csv_position = idx
+                    break
+            list_for_csv.append(csv_reader)
+            print(stat_csv_position)
+            for row in csv_reader:
+                x_labels.append(row[0])
+                y_values.append(float(row[stat_csv_position]))
+        x_labels.reverse()
+        y_values.reverse()
+        ### Create Chart ###
+        line_chart = pygal.Line(x_label_rotation=70)
+        line_chart.title = 'Team stats for ' + stat_form + ' over time'
+        line_chart.x_labels = map(str, x_labels)
+        line_chart.add('Brewers', y_values)
+        stat_line_chart = line_chart.render_data_uri()
+  
     context = {
-        'adoptions_needed': 5,
- 
-    }
+        'chart': stat_line_chart,
+        'navActiveSeason': nav_active_season,
+        }
     return render(request, 'season.html', context)
 
 def team(request):
     print('--------view team')
+    nav_active_team = ' active'
     ##read in file
     file = 'mlbstats/static/team-year-detail-stats/brewers-2020.csv'
     list_of_rows = []
@@ -42,21 +77,21 @@ def team(request):
     #return lists. html will actually format
     context = {
         'header': header,
-        'rows': list_of_rows
-        
+        'rows': list_of_rows,
+        'navActiveTeam': nav_active_team,
     }
     
     return render(request, 'team.html', context)
 
 def player(request):
     print('--------view player')
+    nav_active_player = ' active'
     player_name = ''
     stat_line_chart = ''
     if 'player1' in request.GET:
         print('player info request:', request.GET['player1'])
         player_name = request.GET['player1']
         stat_form = request.GET['stat'].upper()
-        print(stat_form)
         file = 'mlbstats/static/player-stats/ryan-braun_player_stats.csv'
         ####################
         list_for_csv = []
@@ -71,32 +106,24 @@ def player(request):
                     stat_csv_position = idx
                     break
             list_for_csv.append(csv_reader)
-            # find what column to read data from
-            #header = csv_reader[0]
-            #print(header)
-                #if item == statistic:
-                    #statistic_csv = 88
             for row in csv_reader:
                 x_labels.append(row[0])
                 y_values.append(float(row[idx]))
-            print
             
-            print(idx)
-            print('y values:', y_values)
         
 
-        
+        ### Create chart ###
         line_chart = pygal.Bar()
         line_chart.title = stat_form + ' per Season'
         line_chart.x_labels = map(str, x_labels)
         line_chart.add('Ryan Braun', y_values)
-        line_chart.add('Chrome',  [None, None, None, None, None, None,    0,  3.9, 10.8, 23.8, 35.3])
         stat_line_chart = line_chart.render_data_uri()
 
 
     context = {
         'player_name':  player_name,
         'line_chart': stat_line_chart,
+        'navActivePlayer': nav_active_player,
     }
 
     return render(request, 'player.html', context)
