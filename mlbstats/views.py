@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import pygal
 import csv
+import requests
 
 
 # Create your views here.
@@ -110,7 +111,7 @@ def player(request):
                 x_labels.append(row[0])
                 y_values.append(float(row[idx]))
             
-        
+
 
         ### Create chart ###
         line_chart = pygal.Bar()
@@ -127,3 +128,31 @@ def player(request):
     }
 
     return render(request, 'player.html', context)
+
+def scorespast(request):
+    print('--------view scorespast')
+    navActiveScoresPast = ' active'
+    #get score information
+    url = 'https://www.thesportsdb.com/api/v1/json/1/eventslast.php?id=135274'
+    response = requests.get(url)
+    scores_data = response.json() # Interpret response as JSON
+    #get Away team information
+    away_team_dict = {}
+    #for item in scores_data['results']:
+    #    url_away_team = 'https://www.thesportsdb.com/api/v1/json/1/eventslast.php?id=135274'
+    #    response = requests.get(url)
+    #    scores_data = response.json() # Interpret response as JSON
+    url_brewers = 'https://www.thesportsdb.com/api/v1/json/1/lookupteam.php?id=135274'
+    response = requests.get(url_brewers)
+    brewres_data = response.json() # Interpret response as JSON
+    brewers_img = brewres_data['teams'][0]['strTeamBadge']
+    
+    context = {
+        "navActiveScoresPast": navActiveScoresPast,
+        'scores_data': scores_data['results'],
+        'team_image': brewers_img
+
+    }
+
+    return render(request, 'scorespast.html', context)
+

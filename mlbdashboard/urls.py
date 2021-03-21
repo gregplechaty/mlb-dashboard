@@ -23,4 +23,5 @@ urlpatterns = [
     path('season', views.season),
     path('team', views.team),
     path('player', views.player),
+    path('scorespast', views.scorespast),
 ]
