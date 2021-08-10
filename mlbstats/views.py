@@ -23,28 +23,9 @@ def season(request):
     stat_line_chart = ''
     if 'stat' in request.GET and request.GET['stat'] != "":
         print('Historical statistic info request:', request.GET['stat'])
-        stat = request.GET['stat']
         stat_form = request.GET['stat']
         file = 'mlbstats/static/team-hist-stats/brewers-historical.csv'
-        ####################
-        list_for_csv = []
-        x_labels = []
-        y_values = []
-        ####################
-        with open(file) as csv.file:
-            csv_reader = csv.reader(csv.file, delimiter=',')
-            header = next(csv_reader)
-            for idx, item in enumerate(header):
-                if item == stat_form:
-                    stat_csv_position = idx
-                    break
-            list_for_csv.append(csv_reader)
-            print(stat_csv_position)
-            for row in csv_reader:
-                x_labels.append(row[0])
-                y_values.append(float(row[stat_csv_position]))
-        x_labels.reverse()
-        y_values.reverse()
+        list_for_csv, x_labels, y_values = build_axes(file, stat_form)
         ### Create Chart ###
         line_chart = pygal.Line(x_label_rotation=70)
         line_chart.title = 'Team stats for ' + stat_form + ' over time'
@@ -57,6 +38,28 @@ def season(request):
         'navActiveSeason': nav_active_season,
         }
     return render(request, 'season.html', context)
+
+def build_axes(file, stat_form):
+    ####################
+    list_for_csv = []
+    x_labels = []
+    y_values = []
+    ####################
+    with open(file) as csv.file:
+        csv_reader = csv.reader(csv.file, delimiter=',')
+        header = next(csv_reader)
+        for idx, item in enumerate(header):
+            if item == stat_form:
+                stat_csv_position = idx
+                break
+        list_for_csv.append(csv_reader)
+        for row in csv_reader:
+            x_labels.append(row[0])
+            y_values.append(float(row[stat_csv_position]))
+    x_labels.reverse()
+    y_values.reverse()
+
+    return list_for_csv, x_labels, y_values
 
 def team(request):
     print('--------view team')
@@ -86,20 +89,35 @@ def team(request):
 
 def player(request):
     print('--------view player')
-    nav_active_player = ' active'
-    player_name = ''
+    player_name1 = ''
     stat_line_chart = ''
     if 'player1' in request.GET:
-        print('player info request:', request.GET['player1'])
-        player_name = request.GET['player1']
+        print('---GET REQUEST:', request.GET)
+        player_name1 = request.GET['player1']
         stat_form = request.GET['stat'].upper()
-        file = 'mlbstats/static/player-stats/ryan-braun_player_stats.csv'
-        ####################
-        list_for_csv = []
-        x_labels = []
-        y_values = []
-        ####################
-        with open(file) as csv.file:
+        file = 'mlbstats/static/player-stats/' + player_name1 + '_player_stats.csv'
+        x_labels, y_values = generate_chart_values(file, stat_form)
+        stat_line_chart = create_chart(stat_form, player_name1, x_labels, y_values)
+    context = {
+        'player_name1':  player_name1,
+        'line_chart': stat_line_chart,
+        'navActivePlayer': ' active',
+    }
+    return render(request, 'player.html', context)
+
+def create_chart(stat_form, player_name1, x_labels, y_values):
+    line_chart = pygal.Bar()
+    line_chart.title = stat_form + ' per Season'
+    line_chart.x_labels = map(str, x_labels)
+    line_chart.add(player_name1, y_values)
+    stat_line_chart = line_chart.render_data_uri()
+    return stat_line_chart
+
+def generate_chart_values(file, stat_form):
+    list_for_csv = []
+    x_labels = []
+    y_values = []
+    with open(file) as csv.file:
             csv_reader = csv.reader(csv.file, delimiter=',')
             header = next(csv_reader)
             for idx, item in enumerate(header):
@@ -110,24 +128,9 @@ def player(request):
             for row in csv_reader:
                 x_labels.append(row[0])
                 y_values.append(float(row[idx]))
-            
+    return x_labels, y_values
 
 
-        ### Create chart ###
-        line_chart = pygal.Bar()
-        line_chart.title = stat_form + ' per Season'
-        line_chart.x_labels = map(str, x_labels)
-        line_chart.add('Ryan Braun', y_values)
-        stat_line_chart = line_chart.render_data_uri()
-
-
-    context = {
-        'player_name':  player_name,
-        'line_chart': stat_line_chart,
-        'navActivePlayer': nav_active_player,
-    }
-
-    return render(request, 'player.html', context)
 
 def scorespast(request):
     print('--------view scorespast')
