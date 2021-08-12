@@ -1,13 +1,10 @@
-console.log('JS loaded')
 function sortTable(n) {
-    console.log('this better be the number:', n)
-    console.log(n)
     //Thanks to w3schools.
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById("seasonStatTable");
     switching = true;
     //Set the sorting direction to ascending:
-    dir = "asc"; 
+    dir = "desc"; 
     /*Make a loop that will continue until
     no switching has been done:*/
     while (switching) {
@@ -26,7 +23,6 @@ function sortTable(n) {
         /*check if the two rows should switch place,
         based on the direction, asc or desc:*/
         if (dir == "asc") {
-            console.log('COMPARE: ', parseFloat(x.innerHTML), parseFloat(y.innerHTML), parseFloat(x.innerHTML)  > parseInt(y.innerHTML))
             if (parseFloat(x.innerHTML)  > parseFloat(y.innerHTML) ) {
             //if so, mark as a switch and break the loop:
             shouldSwitch= true;
@@ -50,8 +46,8 @@ function sortTable(n) {
       } else {
         /*If no switching has been done AND the direction is "asc",
         set the direction to "desc" and run the while loop again.*/
-        if (switchcount == 0 && dir == "asc") {
-          dir = "desc";
+        if (switchcount == 0 && dir == "desc") {
+          dir = "asc";
           switching = true;
         }
       }
