@@ -109,15 +109,6 @@ def player(request):
     return render(request, 'player.html', context)
 
 def generate_chart_values(file, stat_form):
-    list_for_csv = []
-    x_labels = []
-    y_values = []
-
-    stats_dict = {}
-
-
-
-
     with open(file) as csv.file:
             csv_reader = csv.reader(csv.file, delimiter=',')
             header = next(csv_reader)
@@ -125,13 +116,15 @@ def generate_chart_values(file, stat_form):
                 if item == stat_form:
                     stat_csv_position = idx
                     break
+            list_for_csv = []
+            x_labels = []
+            y_values = []
+            stats_dict = {}
             list_for_csv.append(csv_reader)
             for row in csv_reader:
                 stats_dict[row[0]] = float(row[idx])
                 x_labels.append(row[0])
                 y_values.append(float(row[idx]))
-    #print('x_labels', x_labels)
-    #print('NEW DICT:', stats_dict)
     return x_labels, y_values, stats_dict
 
 def create_chart(file, stat_form, player_name1, file2=None, player_name2=None):
@@ -158,7 +151,6 @@ def create_chart(file, stat_form, player_name1, file2=None, player_name2=None):
     line_chart = pygal.Bar()
     line_chart.title = stat_form + ' per Season'
     line_chart.x_labels = map(str, x_labels_merged)
-    
     if file2:
         line_chart.add(player_name1, y_labels_final_1)
         line_chart.add(player_name2, y_labels_final_2)
@@ -166,6 +158,11 @@ def create_chart(file, stat_form, player_name1, file2=None, player_name2=None):
         line_chart.add(player_name1, y_values_1)
     stat_line_chart = line_chart.render_data_uri()
     return stat_line_chart
+
+
+
+
+
 
 def scorespast(request):
     print('--------view scorespast')
