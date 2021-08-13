@@ -21,16 +21,22 @@ def season(request):
     nav_active_season = ' active'
     player_name = ''
     stat_line_chart = ''
-    if 'stat' in request.GET and request.GET['stat'] != "":
-        print('Historical statistic info request:', request.GET['stat'])
+    if 'stat' in request.GET:
         stat_form = request.GET['stat']
-        file = 'mlbstats/static/team-hist-stats/brewers-historical.csv'
+        team = request.GET['team']
+        file = 'mlbstats/static/team-hist-stats/' + team + '-historical.csv'
         list_for_csv, x_labels, y_values = build_axes(file, stat_form)
+        time_period = 'Over Time'
+        if request.GET['numOfSeasons'] != '':
+            num_of_seasons = int(request.GET['numOfSeasons'])
+            x_labels = x_labels[(num_of_seasons*-1):]
+            y_values = y_values[(num_of_seasons*-1):]
+            time_period = request.GET['numOfSeasons'] + ' Seasons'
         ### Create Chart ###
         line_chart = pygal.Line(x_label_rotation=70)
-        line_chart.title = 'Team stats for ' + stat_form + ' over time'
+        line_chart.title = 'Team stats for ' + stat_form + ' ' + time_period
         line_chart.x_labels = map(str, x_labels)
-        line_chart.add('Brewers', y_values)
+        line_chart.add(team, y_values)
         stat_line_chart = line_chart.render_data_uri()
   
     context = {
