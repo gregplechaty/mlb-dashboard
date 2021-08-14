@@ -4,11 +4,11 @@
 
 
 <h1>Baseball stats: Milwaukee Brewers, 2020</h1>
-<table class="table">
+<table id="seasonStatTable" class="table">
     <thead class="thead-light">
       <tr>
         {% for item in header %}
-            <th scope="col">{{ item }}</th>
+            <th onclick="sortTable( `{{ forloop.counter0 }}` )" scope="col">{{ item }}</th>
         {% endfor %}
       </tr>
     </thead>
@@ -22,5 +22,8 @@
       {% endfor %}
     </tbody>
   </table>
+  {% load static %}
+  <script src="{% static 'js/season_table_sort.js' %}"></script>
+  
 
 {% endblock content %}

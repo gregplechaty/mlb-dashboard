@@ -4,17 +4,30 @@
 
 
 <h1>Team Historical Statistics</h1>
-<h3>For now, it's just the Brewers.</h3>
 <form>
-    <label for="player1">Choose a statistic:</label>
-    <select id="stat" name="stat">
+    <label for="stat">Choose a statistic:</label>
+    <select id="stat" name="stat" required>
       <option></option>
       <option value="W">Wins</option>
       <option value="L">Losses</option>
       <option value="W-L%">Win/Loss percentage</option>
       <option value="Attendance">Attendance</option>
     </select>
-    <input type="submit">
+  </br>
+  <label for="team">Choose a team:</label>
+    <select id="team" name="team" required>
+      <option></option>
+      <option value="brewers">Milwaukee Brewers</option>
+      <option value="cubs">Chicago Cubs</option>
+      <option value="cardinals">St. Louis Cardinals</option>
+      <option value="pirates">Pittsburg Pirates</option>
+      <option value="reds">Cincinnati Reds</option>
+    </select>
+  </br>
+  <label for="stat">Optional: choose the number of years to show.</label>
+  <input type="number" name="numOfSeasons" min="0" step="1" />
+</br>
+  <input type="submit">
 </form>
 
 <embed type="image/svg+xml" src="{{ chart }}" />

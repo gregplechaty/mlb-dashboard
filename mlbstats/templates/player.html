@@ -3,13 +3,12 @@
 {% block content %}
 
 
-<h1>Baseball stats: Player</h1>
+<h1>Player Career Statistics</h1>
 <p>Choose a player to show their career statistics.</p>
 <form>
     <label for="player1">Choose a player:</label>
     <select id="player1" name="player1" placeholder="Select Player">
-      <option></option>
-      <option value="ryan-braun">Ryan Braun</option>
+      <option value="ryan-braun"  selected>Ryan Braun</option>
       <option value="kris-bryant">Kris Bryant</option>
       <option value="yadier-molina">Yadier Molina</option>
       <option value="andrew-mccutchen">Andrew McCutchen</option>
@@ -17,7 +16,7 @@
     </br>
     <label for="player2">Choose a second player (optional):</label>
     <select id="player2" name="player2">
-      <option></option>
+      <option selected></option>
       <option value="ryan-braun">Ryan Braun</option>
       <option value="kris-bryant">Kris Bryant</option>
       <option value="yadier-molina">Yadier Molina</option>
@@ -35,7 +34,7 @@
     <input type="submit">
 </form>
 
-<h3>Player stats for {{ player_name }}</h3>
+<h3>Player stats for {{ player_name1 }}</h3>
 <embed type="image/svg+xml" src="{{ line_chart }}" />
 
 
