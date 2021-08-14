@@ -4,16 +4,9 @@ import csv
 import requests
 
 
-# Create your views here.
 def homepage(request):
     print('--------view homepage')
-    
-    
-    
-    context = {
-        'adoptions_needed': 5,
- 
-    }
+    context = {}
     return render(request, 'homepage.html', context)
 
 def season(request):
@@ -28,13 +21,11 @@ def season(request):
         list_for_csv, x_labels, y_values = build_axes(file, stat_form)
         time_period = 'Over Time'
         if request.GET['numOfSeasons'] != '':
-            num_of_seasons = int(request.GET['numOfSeasons'])
-            x_labels = x_labels[(num_of_seasons*-1):]
-            y_values = y_values[(num_of_seasons*-1):]
-            time_period = request.GET['numOfSeasons'] + ' Seasons'
+            x_labels, y_values = truncate_chart_x_y(x_labels, y_values, request.GET['numOfSeasons'])
+            time_period = 'for the last ' + request.GET['numOfSeasons'] + ' Seasons'
         ### Create Chart ###
         line_chart = pygal.Line(x_label_rotation=70)
-        line_chart.title = 'Team stats for ' + stat_form + ' ' + time_period
+        line_chart.title = 'Team ' + stat_form + ' ' + time_period
         line_chart.x_labels = map(str, x_labels)
         line_chart.add(team, y_values)
         stat_line_chart = line_chart.render_data_uri()
@@ -44,6 +35,12 @@ def season(request):
         'navActiveSeason': nav_active_season,
         }
     return render(request, 'season.html', context)
+
+def truncate_chart_x_y(x_values, y_values, length):
+    num_of_seasons = int(length)
+    new_x_labels = x_values[(num_of_seasons*-1):]
+    new_y_values = y_values[(num_of_seasons*-1):]
+    return new_x_labels, new_y_values
 
 def build_axes(file, stat_form):
     ####################
